@@ -1,8 +1,15 @@
 (ns stylefy.core
   (:require [dommy.core :as dommy]
             [stylefy.impl.styles :as impl-styles]
-            [stylefy.impl.dom :as dom])
+            [stylefy.impl.dom :as dom]
+            [garden.selectors :refer [ICSSSelector]]
+            [garden.types :refer [CSSUnit]])
   (:require-macros [reagent.ratom :refer [run!]]))
+
+;; Allow % to be a keyframe selector
+(extend-protocol ICSSSelector
+  CSSUnit
+  (css-selector [this] this))
 
 (defn use-style
   "Defines a style for a component by converting the given style map in to an unique CSS class,
@@ -214,3 +221,35 @@
   (when style
     (impl-styles/prepare-styles [style]))
   style)
+
+(comment
+  (require '[garden.units :as g])
+  (g/percent 100)
+  (keyframes "expand-item"
+             [(g/percent 50)
+              {:background-color "red"}]
+             [(g/percent 100)
+              {:background-color "blue"}])
+  )
+
+
+(comment
+  (do (require '[garden.stylesheet :refer [at-keyframes]])
+      (require '[garden.core :refer [css]])
+      (require '[garden.units :as g]))
+  (let [identifier "expand-item"
+        frames [[(g/percent 50)
+                 {:background-color "red"}]
+                [(g/percent 100)
+                 {:background-color "blue"}]
+                [:from
+                 {:background-color "red"}]]
+        adk (apply at-keyframes identifier frames)
+        css_result (css adk) ;; problem is here!
+        ]
+    (println "====== apply at-keyframes result: " adk)
+    (println "++++++ css rendering result: " css_result)
+    (println "--------------------------------------------")
+    (println "-----------------------DONE ----------------")
+    (println "--------------------------------------------\n"))
+  )
