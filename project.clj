@@ -1,6 +1,6 @@
-(defproject stylefy "1.13.3"
-  :description "Library for styling UI components"
-  :url "https://github.com/Jarzka/stylefy"
+(defproject org.clojars.alai/stylefy-fork "1.13.3"
+  :description "Library for styling UI components - forked from Jarzka/stylefy"
+  :url "https://github.com/ALai57/stylefy"
   :dependencies [[org.clojure/clojure "1.9.0"]
                  [org.clojure/clojurescript "1.9.946"]
                  [prismatic/dommy "1.1.0"]
